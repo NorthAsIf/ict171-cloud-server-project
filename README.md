@@ -1,7 +1,7 @@
 # ICT171 Assignment 2 – Cloud Server Project 🌐
 
-**Name:** Kobus Nieuwoudt  
-**Student ID:** 12345678  
+**Name:** Reinhardt Nieuwoudt     
+**Student ID:** 35204517  
 
 ---
 
