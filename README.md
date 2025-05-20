@@ -1,10 +1,8 @@
-```
-  ____ _                 _   ____                                         
- / ___| | ___  _   _  __| | / ___|  ___ _ ____   _____ _ __     
-| |   | |/ _ \| | | |/ _` | \___ \ / _ \ '__\ \ / / _ \ '__|   
-| |___| | (_) | |_| | (_| |  ___) |  __/ |   \ V /  __/ |      
- \____|_|\___/ \__,_|\__,_| |____/ \___|_|    \_/ \___|_|       
-```
+# 🌐 Cloud Server Project
+
+A lightweight, secure web server hosted on AWS EC2 using Apache, DNS, and SSL.  
+Built for ICT171 to demonstrate IaaS deployment, scripting, and server configuration.
+
 
 
 
