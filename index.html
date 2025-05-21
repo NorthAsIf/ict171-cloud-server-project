@@ -4,9 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>northosc.pw – Cloud Server Project</title>
+
+  <!-- External Libraries -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Styles -->
   <style>
     html { scroll-behavior: smooth; }
     body {
@@ -92,14 +97,13 @@
       border-radius: 24px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       padding: 2rem;
-      max-width: 360px;
+      max-width: 600px;
       text-align: center;
       margin: 2rem auto;
       color: #222;
     }
-    .weather-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+    canvas {
+      max-width: 100%;
     }
   </style>
 </head>
@@ -123,7 +127,7 @@
     <div class="home-content">
       <h1>Welcome to <span>northosc.pw</span></h1>
       <h3 class="typing-text"><span id="status"></span></h3>
-      <p>This website showcases a secure, custom-built cloud server running on AWS EC2. It includes DNS configuration, SSL via Certbot, and dynamic JavaScript features such as live status detection.</p>
+      <p>This website showcases a secure, custom-built cloud server running on AWS EC2. It includes DNS configuration, SSL via Certbot, and dynamic JavaScript features such as live status detection and real-time data visualisation.</p>
       <div class="social-icons">
         <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank">
           <i class="fa-brands fa-github"></i>
@@ -133,13 +137,21 @@
   </section>
 
   <section id="javascript" data-aos="fade-up">
-    <h2>JavaScript – Live Weather</h2>
+    <h2>JavaScript Showcase</h2>
+
+    <!-- Weather App -->
     <div class="weather-card" id="weather">
       <div class="weather-icon">🌤️</div>
       <h1>Fetching your location...</h1>
       <h2>--°C</h2>
       <p>Wind: -- km/h</p>
       <p>Time: --</p>
+    </div>
+
+    <!-- Bandwidth Usage Chart -->
+    <div class="weather-card">
+      <h2>Simulated Bandwidth Usage</h2>
+      <canvas id="bandwidthChart" width="400" height="200"></canvas>
     </div>
   </section>
 
@@ -163,11 +175,12 @@
     <p>This project was created by Ryan — Student ID: 35204517. For more information, contact via the GitHub repository or linked services.</p>
   </section>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Typewriter that loops through phrases
+    // Typing Text Animation
     const typewriterPhrases = [
       "Server is running ✅",
       "JavaScript is running normally 💻",
@@ -200,7 +213,7 @@
 
     loopTypewriter();
 
-    // Weather and location fetch
+    // Weather Fetching
     const weatherCard = document.getElementById('weather');
     if (weatherCard && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -248,7 +261,7 @@
       );
     }
 
-    // Scroll nav highlight
+    // Scroll Navigation Highlight
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll("nav a");
 
@@ -269,6 +282,78 @@
         }
       });
     });
+
+    // Bandwidth Usage Simulation
+    const ctx = document.getElementById('bandwidthChart').getContext('2d');
+    const initialLabels = Array.from({ length: 10 }, (_, i) => `${i}s`);
+    const bandwidthData = {
+      labels: initialLabels,
+      datasets: [
+        {
+          label: 'Download (Mbps)',
+          backgroundColor: 'rgba(0, 123, 255, 0.2)',
+          borderColor: 'rgba(0, 123, 255, 1)',
+          data: Array(10).fill(0),
+          tension: 0.4,
+          fill: true,
+        },
+        {
+          label: 'Upload (Mbps)',
+          backgroundColor: 'rgba(40, 167, 69, 0.2)',
+          borderColor: 'rgba(40, 167, 69, 1)',
+          data: Array(10).fill(0),
+          tension: 0.4,
+          fill: true,
+        }
+      ]
+    };
+
+    const bandwidthChart = new Chart(ctx, {
+      type: 'line',
+      data: bandwidthData,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Mbps'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Time (s)'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        }
+      }
+    });
+
+    let elapsedSeconds = 10;
+    setInterval(() => {
+      const downloadSpeed = (Math.random() * 50 + 10).toFixed(2); // Mbps
+      const uploadSpeed = (Math.random() * 20 + 5).toFixed(2); // Mbps
+
+      bandwidthData.labels.push(`${elapsedSeconds}s`);
+      bandwidthData.labels.shift(); // remove oldest
+
+      bandwidthData.datasets[0].data.push(downloadSpeed);
+      bandwidthData.datasets[0].data.shift();
+
+      bandwidthData.datasets[1].data.push(uploadSpeed);
+      bandwidthData.datasets[1].data.shift();
+
+      bandwidthChart.update();
+      elapsedSeconds += 1;
+    }, 2000);
   </script>
 </body>
 </html>
