@@ -1,8 +1,14 @@
 # 🌐 Cloud Server Project
 
-A lightweight, secure web server hosted on AWS EC2 using Apache, DNS, and SSL.  
-Built for ICT171 to demonstrate IaaS deployment, scripting, and server configuration.
+This project was created to demonstrate our learning of cloud-based infrastructure using an IaaS (Infrastructure-as-a-Service) model. It showcases:
 
+Deployment of a lightweight, secure web server on AWS EC2
+
+Use of Apache, DNS configuration, and SSL encryption
+
+JavaScript-based features like real-time weather, geolocation, and animations
+
+Built as part of ICT171, this project highlights key skills in server setup, frontend integration, and cloud service management.
 
 
 
