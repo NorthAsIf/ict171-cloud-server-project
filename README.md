@@ -26,9 +26,14 @@ Built as part of ICT171, this project highlights key skills in server setup, fro
 ## 📄 Project Overview
 This cloud server was deployed using **AWS EC2** (IaaS model) and manually configured with:
 - Ubuntu Server 22.04
+
 - Apache2 Web Server
-- SSL certificate via **Certbot**
+
+- SSL certificate via Certbot
+
 - DNS configured with GoDaddy
+
+- Frontend integration with OpenCage Geocoding API and Open-Meteo Weather API for live location and weather data
 
 ---
 
