@@ -141,6 +141,50 @@
     canvas {
       max-width: 100%;
     }
+
+    /* Timeline styles */
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 3rem 0;
+      border-left: 4px solid #0ea5e9;
+      position: relative;
+    }
+    .timeline li {
+      position: relative;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      top: 1.4rem;
+      left: -12px;
+      width: 14px;
+      height: 14px;
+      background-color: #0ea5e9;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+    }
+    .timeline li:hover {
+      transform: translateY(-4px);
+    }
+    .timeline code {
+      display: block;
+      background: #f3f4f6;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      font-family: monospace;
+      color: #111827;
+    }
   </style>
 </head>
 <body>
@@ -197,8 +241,36 @@
   </section>
 
   <section id="setup" data-aos="fade-up">
-    <h2>Setup</h2>
-    <p>This section outlines the steps taken to deploy the cloud server environment. It includes launching the EC2 instance, installing Apache, pointing a domain name, and enabling HTTPS using Certbot.</p>
+    <h2>🚀 Setup Timeline</h2>
+    <ul class="timeline">
+      <li data-aos="fade-right"><strong>Step 1:</strong> Update your system  
+        <code>sudo apt update && sudo apt upgrade -y</code>
+      </li>
+      <li data-aos="fade-left"><strong>Step 2:</strong> Install Apache  
+        <code>sudo apt install apache2 -y</code>
+      </li>
+      <li data-aos="fade-right"><strong>Step 3:</strong> Allow HTTP through UFW  
+        <code>sudo ufw allow in "Apache"</code>
+      </li>
+      <li data-aos="fade-left"><strong>Step 4:</strong> Enable Apache on boot  
+        <code>sudo systemctl enable apache2</code>
+      </li>
+      <li data-aos="fade-right"><strong>Step 5:</strong> Start Apache  
+        <code>sudo systemctl start apache2</code>
+      </li>
+      <li data-aos="fade-left"><strong>Step 6:</strong> Replace Apache Default Page  
+        <code>sudo bash -c 'cat &lt;&lt;EOF &gt; /var/www/html/index.html'</code>  
+        <em>Paste your HTML, then:</em>  
+        <code>EOF</code>
+      </li>
+      <li data-aos="fade-right"><strong>Step 7:</strong> Restart Apache  
+        <code>sudo systemctl restart apache2</code>
+      </li>
+      <li data-aos="fade-left"><strong>Step 8:</strong> Enable SSL with Certbot  
+        <code>sudo apt install certbot python3-certbot-apache -y</code>  
+        <code>sudo certbot --apache</code>
+      </li>
+    </ul>
   </section>
 
   <section id="tools" data-aos="fade-up">
@@ -207,7 +279,7 @@
   </section>
 
   <section id="docs" data-aos="fade-up">
-    <h2>Documentation</h2>
+    <h2>Documentation 📘</h2>
     <p>Full setup instructions and source code can be found in the GitHub repository: <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank">github.com/NorthAsIf/ict171-cloud-server-project</a></p>
   </section>
 
@@ -221,7 +293,6 @@
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Typing Text Animation
     const typewriterPhrases = [
       "Server is running ✅",
       "JavaScript is running normally 💻",
@@ -254,7 +325,6 @@
 
     loopTypewriter();
 
-    // Weather Fetching
     const weatherCard = document.getElementById('weather');
     if (weatherCard && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -302,7 +372,6 @@
       );
     }
 
-    // Scroll Navigation Highlight
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll("nav a");
 
@@ -324,7 +393,6 @@
       });
     });
 
-    // Bandwidth Usage Simulation
     const ctx = document.getElementById('bandwidthChart').getContext('2d');
     const initialLabels = Array.from({ length: 10 }, (_, i) => `${i}s`);
     const bandwidthData = {
@@ -396,14 +464,13 @@
       elapsedSeconds += 1;
     }, 2000);
 
-    // Fade out Preloader 
     window.addEventListener("load", () => {
       setTimeout(() => {
         const preloader = document.getElementById("preloader");
         preloader.style.transition = "opacity 1s ease";
         preloader.style.opacity = "0";
         setTimeout(() => preloader.remove(), 1000);
-      }, 3000); // shortened from 4000 to 3000
+      }, 3000);
     });
   </script>
 </body>
