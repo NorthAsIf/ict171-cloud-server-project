@@ -10,8 +10,8 @@
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <!-- Custom Styles -->
   <style>
     html { scroll-behavior: smooth; }
     body {
@@ -21,7 +21,6 @@
       color: black;
     }
 
-    /* Preloader Styling */
     #preloader {
       position: fixed;
       width: 100%;
@@ -51,9 +50,7 @@
     }
 
     @keyframes drawText {
-      to {
-        stroke-dashoffset: 0;
-      }
+      to { stroke-dashoffset: 0; }
     }
 
     header {
@@ -68,12 +65,14 @@
       z-index: 1000;
       border-bottom: 1px solid black;
     }
+
     .logo {
       font-size: 2.5rem;
       font-weight: bold;
       color: black;
       text-decoration: none;
     }
+
     nav a {
       color: black;
       margin-left: 2rem;
@@ -82,52 +81,51 @@
       border-bottom: 2px solid transparent;
       transition: border-bottom 0.3s ease;
     }
+
     nav a.active,
     nav a:hover {
       border-bottom: 2px solid black;
     }
+
     section {
       padding: 10rem 9% 5rem;
       min-height: 100vh;
     }
+
     .home {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
     }
+
     .home-img img {
       width: 350px;
       height: auto;
-      object-fit: contain;
       margin-bottom: 2rem;
     }
+
     .home-content h1 {
       font-size: 3.5rem;
     }
+
     .home-content h3 {
       font-size: 2rem;
       margin: 1rem 0;
       min-height: 2.5rem;
     }
+
     .home-content p {
       font-size: 1.4rem;
       max-width: 600px;
       margin: 0 auto;
     }
+
     h2 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
     }
-    p {
-      font-size: 1.3rem;
-    }
-    .social-icons a {
-      color: black;
-      font-size: 2rem;
-      margin: 1rem;
-      text-decoration: none;
-    }
+
     .weather-card {
       background: white;
       border-radius: 24px;
@@ -138,13 +136,29 @@
       margin: 2rem auto;
       color: #222;
     }
+
     canvas {
       max-width: 100%;
+    }
+
+    #timeline-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      line-height: 1.6;
+    }
+
+    .social-icons a {
+      color: black;
+      font-size: 2rem;
+      margin: 1rem;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <!-- SVG Preloader -->
+  <!-- Preloader -->
   <div id="preloader">
     <svg viewBox="0 0 600 100" class="north-draw">
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">NORTH</text>
@@ -154,11 +168,12 @@
   <header>
     <a href="#home" class="logo">northosc.pw</a>
     <nav>
-      <a href="#home" class="active">Server</a>
+      <a href="#home">Server</a>
       <a href="#javascript">JavaScript</a>
       <a href="#setup">Setup</a>
       <a href="#tools">Tools</a>
       <a href="#docs">Docs</a>
+      <a href="#timeline">Timeline</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -170,18 +185,15 @@
     <div class="home-content">
       <h1>Welcome to <span>northosc.pw</span></h1>
       <h3 class="typing-text"><span id="status"></span></h3>
-      <p>This website showcases a secure, custom-built cloud server running on AWS EC2. It includes DNS configuration, SSL via Certbot, and dynamic JavaScript features such as live status detection and real-time data visualisation.</p>
+      <p>This website showcases a secure, custom-built cloud server running on AWS EC2.</p>
       <div class="social-icons">
-        <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank">
-          <i class="fa-brands fa-github"></i>
-        </a>
+        <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank"><i class="fa-brands fa-github"></i></a>
       </div>
     </div>
   </section>
 
   <section id="javascript" data-aos="fade-up">
     <h2>JavaScript Showcase</h2>
-
     <div class="weather-card" id="weather">
       <div class="weather-icon">🌤️</div>
       <h1>Fetching your location...</h1>
@@ -189,7 +201,6 @@
       <p>Wind: -- km/h</p>
       <p>Time: --</p>
     </div>
-
     <div class="weather-card">
       <h2>Simulated Bandwidth Usage</h2>
       <canvas id="bandwidthChart" width="400" height="200"></canvas>
@@ -198,22 +209,27 @@
 
   <section id="setup" data-aos="fade-up">
     <h2>Setup</h2>
-    <p>This section outlines the steps taken to deploy the cloud server environment. It includes launching the EC2 instance, installing Apache, pointing a domain name, and enabling HTTPS using Certbot.</p>
+    <p>Setup instructions for the EC2 instance, Apache, DNS, and Certbot.</p>
   </section>
 
   <section id="tools" data-aos="fade-up">
     <h2>Tools</h2>
-    <p>This project used a range of tools and technologies: AWS EC2, Apache2, GitHub, Certbot, HTML5, CSS3, JavaScript, Open-Meteo API, and OpenCage Geocoding API.</p>
+    <p>EC2, Apache, GitHub, Certbot, HTML, CSS, JS, Open-Meteo, OpenCage.</p>
   </section>
 
   <section id="docs" data-aos="fade-up">
     <h2>Documentation</h2>
-    <p>Full setup instructions and source code can be found in the GitHub repository: <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank">github.com/NorthAsIf/ict171-cloud-server-project</a></p>
+    <p>See full project at: <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank">GitHub Repository</a></p>
+  </section>
+
+  <section id="timeline" data-aos="fade-up">
+    <h2>Project Timeline</h2>
+    <div id="timeline-container">Loading timeline...</div>
   </section>
 
   <section id="contact" data-aos="fade-up">
     <h2>Contact</h2>
-    <p>This project was created by Ryan — Student ID: 35204517. For more information, contact via the GitHub repository or linked services.</p>
+    <p>Created by Ryan – Student ID: 35204517.</p>
   </section>
 
   <!-- Scripts -->
@@ -221,189 +237,116 @@
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Typing Text Animation
-    const typewriterPhrases = [
-      "Server is running ✅",
-      "JavaScript is running normally 💻",
-      "Cloud connection established 🌐"
-    ];
-    let twIndex = 0;
+    // Load timeline
+    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/Timeline.md')
+      .then(res => res.text())
+      .then(md => document.getElementById('timeline-container').innerHTML = marked.parse(md))
+      .catch(err => console.error(err));
 
-    function typeWriter(text, elementId, speed = 60, callback = null) {
+    // Typing animation
+    const phrases = ["Server is running ✅", "JavaScript is running 💻", "Cloud connected 🌐"];
+    let idx = 0;
+    function typeWriter(txt, el, speed = 60, cb = null) {
       let i = 0;
-      const target = document.getElementById(elementId);
+      const target = document.getElementById(el);
       target.textContent = "";
       function type() {
-        if (i < text.length) {
-          target.textContent += text.charAt(i);
-          i++;
+        if (i < txt.length) {
+          target.textContent += txt.charAt(i++);
           setTimeout(type, speed);
-        } else if (callback) {
-          setTimeout(callback, 1500);
-        }
+        } else if (cb) setTimeout(cb, 1500);
       }
       type();
     }
-
-    function loopTypewriter() {
-      typeWriter(typewriterPhrases[twIndex], "status", 60, () => {
-        twIndex = (twIndex + 1) % typewriterPhrases.length;
-        loopTypewriter();
+    function loopTyping() {
+      typeWriter(phrases[idx], "status", 60, () => {
+        idx = (idx + 1) % phrases.length;
+        loopTyping();
       });
     }
+    loopTyping();
 
-    loopTypewriter();
-
-    // Weather Fetching
-    const weatherCard = document.getElementById('weather');
-    if (weatherCard && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-
-          const GEOCODE_API_KEY = 'dbebf239818b4450884caccac93ced74';
-          const geocodeUrl = https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${GEOCODE_API_KEY};
-
-          fetch(geocodeUrl)
-            .then(response => response.json())
-            .then(locationData => {
-              const c = locationData.results[0]?.components || {};
-              const locationParts = [
-                c.suburb,
-                c.city || c.town || c.village,
-                c.state,
-                c.country
-              ].filter(Boolean);
-              const locationName = locationParts.join(", ");
-
-              const weatherUrl = https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true;
-
-              fetch(weatherUrl)
-                .then(response => response.json())
-                .then(data => {
-                  const weather = data.current_weather;
-                  weatherCard.innerHTML = 
-                    <div class="weather-icon">🌤️</div>
-                    <h1>Current Weather in ${locationName}</h1>
-                    <h2>${weather.temperature}°C</h2>
-                    <p>Wind: ${weather.windspeed} km/h</p>
-                    <p>Time: ${weather.time}</p>
-                  ;
-                });
-            });
-        },
-        () => {
-          weatherCard.innerHTML = 
-            <h1>Permission Denied</h1>
-            <p>Could not access your location.</p>
-          ;
-        }
-      );
-    }
-
-    // Scroll Navigation Highlight
+    // Scroll-based active nav
     const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll("nav a");
+    const navLinks = document.querySelectorAll("header nav a");
 
     window.addEventListener("scroll", () => {
-      let current = "";
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop - 120;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-          current = section.getAttribute("id");
-        }
-      });
+      let scrollY = window.scrollY;
 
-      navLinks.forEach((link) => {
-        link.classList.remove("active");
-        if (link.getAttribute("href") === "#" + current) {
-          link.classList.add("active");
+      sections.forEach(section => {
+        const offset = section.offsetTop - 150;
+        const height = section.offsetHeight;
+        const id = section.getAttribute("id");
+
+        if (scrollY >= offset && scrollY < offset + height) {
+          navLinks.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${id}`) {
+              link.classList.add("active");
+            }
+          });
         }
       });
     });
 
-    // Bandwidth Usage Simulation
+    // Bandwidth chart
     const ctx = document.getElementById('bandwidthChart').getContext('2d');
-    const initialLabels = Array.from({ length: 10 }, (_, i) => ${i}s);
-    const bandwidthData = {
-      labels: initialLabels,
+    const labels = Array.from({ length: 10 }, (_, i) => `${i}s`);
+    const data = {
+      labels,
       datasets: [
         {
           label: 'Download (Mbps)',
-          backgroundColor: 'rgba(0, 123, 255, 0.2)',
-          borderColor: 'rgba(0, 123, 255, 1)',
           data: Array(10).fill(0),
+          borderColor: 'rgba(0, 123, 255, 1)',
+          backgroundColor: 'rgba(0, 123, 255, 0.2)',
           tension: 0.4,
-          fill: true,
+          fill: true
         },
         {
           label: 'Upload (Mbps)',
-          backgroundColor: 'rgba(40, 167, 69, 0.2)',
-          borderColor: 'rgba(40, 167, 69, 1)',
           data: Array(10).fill(0),
+          borderColor: 'rgba(40, 167, 69, 1)',
+          backgroundColor: 'rgba(40, 167, 69, 0.2)',
           tension: 0.4,
-          fill: true,
+          fill: true
         }
       ]
     };
 
-    const bandwidthChart = new Chart(ctx, {
+    const chart = new Chart(ctx, {
       type: 'line',
-      data: bandwidthData,
+      data,
       options: {
         responsive: true,
         scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Mbps'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Time (s)'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top'
-          }
+          y: { beginAtZero: true, title: { display: true, text: 'Mbps' }},
+          x: { title: { display: true, text: 'Time (s)' }}
         }
       }
     });
 
-    let elapsedSeconds = 10;
+    let elapsed = 10;
     setInterval(() => {
-      const downloadSpeed = (Math.random() * 50 + 10).toFixed(2);
-      const uploadSpeed = (Math.random() * 20 + 5).toFixed(2);
-
-      bandwidthData.labels.push(${elapsedSeconds}s);
-      bandwidthData.labels.shift();
-
-      bandwidthData.datasets[0].data.push(downloadSpeed);
-      bandwidthData.datasets[0].data.shift();
-
-      bandwidthData.datasets[1].data.push(uploadSpeed);
-      bandwidthData.datasets[1].data.shift();
-
-      bandwidthChart.update();
-      elapsedSeconds += 1;
+      const dl = (Math.random() * 50 + 10).toFixed(2);
+      const ul = (Math.random() * 20 + 5).toFixed(2);
+      data.labels.push(`${elapsed++}s`);
+      data.labels.shift();
+      data.datasets[0].data.push(dl);
+      data.datasets[0].data.shift();
+      data.datasets[1].data.push(ul);
+      data.datasets[1].data.shift();
+      chart.update();
     }, 2000);
 
-    // Fade out Preloader 
+    // Preloader fade out
     window.addEventListener("load", () => {
       setTimeout(() => {
         const preloader = document.getElementById("preloader");
         preloader.style.transition = "opacity 1s ease";
         preloader.style.opacity = "0";
         setTimeout(() => preloader.remove(), 1000);
-      }, 3000); // shortened from 4000 to 3000
+      }, 3000);
     });
   </script>
 </body>
