@@ -76,29 +76,40 @@
     nav a:hover {
       border-bottom: 2px solid black;
     }
+
     section {
       padding: 10rem 9% 5rem;
       min-height: 100vh;
     }
+
     .home {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .home-img {
+      flex: 1 1 40%;
       text-align: center;
     }
     .home-img img {
-      width: 350px;
+      max-width: 100%;
       height: auto;
-      margin-bottom: 2rem;
+      border-radius: 10px;
     }
-    .home-content h1 { font-size: 3.5rem; }
-    .home-content h3 { font-size: 2rem; margin: 1rem 0; min-height: 2.5rem; }
-    .home-content p {
-      font-size: 1.4rem;
-      max-width: 600px;
-      margin: 0 auto;
+    .home-content {
+      flex: 1 1 55%;
     }
-    h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .home-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .home-content span {
+      font-weight: 600;
+      color: #000;
+    }
+
     .weather-card {
       background: white;
       border-radius: 24px;
@@ -109,20 +120,41 @@
       margin: 2rem auto;
       color: #222;
     }
+
     canvas { max-width: 100%; }
-    #timeline-container {
+
+    #timeline-container, #docs-container {
       background: white;
       padding: 2rem;
       border-radius: 10px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       line-height: 1.6;
+      margin-top: 1rem;
+      overflow: hidden;
+      max-height: 400px;
+      transition: max-height 0.6s ease;
     }
+
+    .toggle-btn {
+      display: block;
+      margin: 1rem auto;
+      background: black;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 5px;
+    }
+
     .social-icons a {
       color: black;
       font-size: 2rem;
       margin: 1rem;
       text-decoration: none;
     }
+
+    .home-content h3 { min-height: 2.5rem; }
   </style>
 </head>
 <body>
@@ -152,7 +184,7 @@
     <div class="home-content">
       <h1>Welcome to <span>northosc.pw</span></h1>
       <h3 class="typing-text"><span id="status"></span></h3>
-      <p>This website showcases a secure, custom-built cloud server running on AWS EC2.</p>
+      <p>This is a test website I built on AWS EC2 for my uni assignment. It's got a few cool features, like weather and traffic charts, just for fun.</p>
       <div class="social-icons">
         <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank"><i class="fa-brands fa-github"></i></a>
       </div>
@@ -176,22 +208,24 @@
 
   <section id="setup" data-aos="fade-up">
     <h2>Setup</h2>
-    <p>Setup instructions for the EC2 instance, Apache, DNS, and Certbot.</p>
+    <p>Instructions on how I set up Apache, Certbot, and DNS on my AWS instance.</p>
   </section>
 
   <section id="tools" data-aos="fade-up">
     <h2>Tools</h2>
-    <p>EC2, Apache, GitHub, Certbot, HTML, CSS, JS, Open-Meteo, OpenCage.</p>
+    <p>EC2, Apache, GitHub, Certbot, HTML, CSS, JS, Open-Meteo, OpenCage, Chart.js, marked.js</p>
   </section>
 
   <section id="docs" data-aos="fade-up">
     <h2>Documentation</h2>
-    <p>See full project at: <a href="https://github.com/NorthAsIf/ict171-cloud-server-project" target="_blank">GitHub Repository</a></p>
+    <div id="docs-container">Loading documentation...</div>
+    <button class="toggle-btn" onclick="toggleExpand('docs-container')">Toggle Docs View</button>
   </section>
 
   <section id="timeline" data-aos="fade-up">
     <h2>Project Timeline</h2>
     <div id="timeline-container">Loading timeline...</div>
+    <button class="toggle-btn" onclick="toggleExpand('timeline-container')">Toggle Timeline View</button>
   </section>
 
   <section id="contact" data-aos="fade-up">
@@ -203,6 +237,36 @@
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 1000, once: true });
+
+    const toggleExpand = (id) => {
+      const el = document.getElementById(id);
+      if (el.style.maxHeight === "none") {
+        el.style.maxHeight = "400px";
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        el.style.maxHeight = "none";
+      }
+    };
+
+    // Scroll nav
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll("header nav a");
+    window.addEventListener("scroll", () => {
+      let scrollY = window.scrollY;
+      sections.forEach(section => {
+        const offset = section.offsetTop - 150;
+        const height = section.offsetHeight;
+        const id = section.getAttribute("id");
+        if (scrollY >= offset && scrollY < offset + height) {
+          navLinks.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${id}`) {
+              link.classList.add("active");
+            }
+          });
+        }
+      });
+    });
 
     // Typing animation
     const phrases = ["Server is running ✅", "JavaScript is running 💻", "Cloud connected 🌐"];
@@ -227,50 +291,21 @@
     }
     loopTyping();
 
-    // Scroll nav
-    const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll("header nav a");
-    window.addEventListener("scroll", () => {
-      let scrollY = window.scrollY;
-      sections.forEach(section => {
-        const offset = section.offsetTop - 150;
-        const height = section.offsetHeight;
-        const id = section.getAttribute("id");
-        if (scrollY >= offset && scrollY < offset + height) {
-          navLinks.forEach(link => {
-            link.classList.remove("active");
-            if (link.getAttribute("href") === `#${id}`) {
-              link.classList.add("active");
-            }
-          });
-        }
-      });
-    });
-
-    // Timeline
-    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/Timeline.md')
-      .then(res => res.text())
-      .then(md => document.getElementById('timeline-container').innerHTML = marked.parse(md))
-      .catch(err => console.error(err));
-
-    // Weather API
+    // Weather
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-
-        const geocodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=dbebf239818b4450884caccac93ced74`;
-        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-
+        const geoURL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=dbebf239818b4450884caccac93ced74`;
+        const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
         try {
-          const [geoRes, weatherRes] = await Promise.all([fetch(geocodeUrl), fetch(weatherUrl)]);
+          const [geoRes, weatherRes] = await Promise.all([fetch(geoURL), fetch(weatherURL)]);
           const geo = await geoRes.json();
           const weather = await weatherRes.json();
           const city = geo.results[0].components.city || geo.results[0].components.town || "your area";
           const temp = weather.current_weather.temperature;
           const wind = weather.current_weather.windspeed;
           const time = weather.current_weather.time.split("T")[1];
-
           document.querySelector("#weather h1").textContent = `Weather in ${city}`;
           document.querySelector("#weather h2").textContent = `${temp}°C`;
           document.querySelector("#weather p:nth-of-type(1)").textContent = `Wind: ${wind} km/h`;
@@ -283,7 +318,7 @@
 
     // Bandwidth chart
     const ctx = document.getElementById('bandwidthChart').getContext('2d');
-    const data = {
+    const chartData = {
       labels: Array.from({ length: 10 }, (_, i) => `${i}s`),
       datasets: [
         {
@@ -306,7 +341,7 @@
     };
     const chart = new Chart(ctx, {
       type: 'line',
-      data,
+      data: chartData,
       options: {
         responsive: true,
         scales: {
@@ -319,14 +354,22 @@
     setInterval(() => {
       const dl = (Math.random() * 50 + 10).toFixed(2);
       const ul = (Math.random() * 20 + 5).toFixed(2);
-      data.labels.push(`${elapsed++}s`);
-      data.labels.shift();
-      data.datasets[0].data.push(dl);
-      data.datasets[0].data.shift();
-      data.datasets[1].data.push(ul);
-      data.datasets[1].data.shift();
+      chartData.labels.push(`${elapsed++}s`);
+      chartData.labels.shift();
+      chartData.datasets[0].data.push(dl);
+      chartData.datasets[0].data.shift();
+      chartData.datasets[1].data.push(ul);
+      chartData.datasets[1].data.shift();
       chart.update();
     }, 2000);
+
+    // Timeline + Docs
+    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/Timeline.md')
+      .then(res => res.text())
+      .then(md => document.getElementById('timeline-container').innerHTML = marked.parse(md));
+    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/documentation.md')
+      .then(res => res.text())
+      .then(md => document.getElementById('docs-container').innerHTML = marked.parse(md));
 
     // Preloader
     window.addEventListener("load", () => {
