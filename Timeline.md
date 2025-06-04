@@ -1,4 +1,4 @@
-# 📅 northosc.pw – Project Timeline Documentation
+# 🗓️ northosc.pw – Project Timeline Documentation
 
 This document outlines the chronological steps taken to build and deploy the **northosc.pw** cloud server project, including command-line actions and corresponding code implementations.
 
@@ -128,17 +128,50 @@ fetch(weatherURL).then(res => res.json()).then(data => {
 **JavaScript:**
 ```js
 const ctx = document.getElementById('bandwidthChart').getContext('2d');
+const chartData = {
+  labels: Array.from({ length: 10 }, (_, i) => `${i}s`),
+  datasets: [
+    {
+      label: 'Download (Mbps)',
+      data: Array(10).fill(0),
+      borderColor: 'blue',
+      backgroundColor: 'rgba(0, 123, 255, 0.2)',
+      tension: 0.4,
+      fill: true
+    },
+    {
+      label: 'Upload (Mbps)',
+      data: Array(10).fill(0),
+      borderColor: 'green',
+      backgroundColor: 'rgba(40, 167, 69, 0.2)',
+      tension: 0.4,
+      fill: true
+    }
+  ]
+};
+
 const chart = new Chart(ctx, {
   type: 'line',
-  data: {
-    labels: [...],
-    datasets: [...]
-  },
-  options: { responsive: true }
+  data: chartData,
+  options: {
+    responsive: true,
+    scales: {
+      y: { beginAtZero: true },
+      x: { title: { display: true, text: 'Time (s)' } }
+    }
+  }
 });
 
+let elapsed = 10;
 setInterval(() => {
-  // update chart data dynamically
+  const dl = (Math.random() * 50 + 10).toFixed(2);
+  const ul = (Math.random() * 20 + 5).toFixed(2);
+  chartData.labels.push(`${elapsed++}s`);
+  chartData.labels.shift();
+  chartData.datasets[0].data.push(dl);
+  chartData.datasets[0].data.shift();
+  chartData.datasets[1].data.push(ul);
+  chartData.datasets[1].data.shift();
   chart.update();
 }, 2000);
 ```
@@ -175,6 +208,48 @@ setInterval(() => {
       document.getElementById('timeline-container').innerHTML = marked.parse(md);
     });
 </script>
+```
+
+---
+
+## 🗓️ 2025-05-06 – Added Smooth Scroll-Based Section Highlighting
+
+**JavaScript:**
+```js
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll("header nav a");
+window.addEventListener("scroll", () => {
+  let scrollY = window.scrollY;
+  sections.forEach(section => {
+    const offset = section.offsetTop - 150;
+    const height = section.offsetHeight;
+    const id = section.getAttribute("id");
+    if (scrollY >= offset && scrollY < offset + height) {
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${id}`) {
+          link.classList.add("active");
+        }
+      });
+    }
+  });
+});
+```
+
+---
+
+## 🗓️ 2025-05-06 – Added Preloader Auto-Fade on Load
+
+**JavaScript:**
+```js
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const preloader = document.getElementById("preloader");
+    preloader.style.transition = "opacity 1s ease";
+    preloader.style.opacity = "0";
+    setTimeout(() => preloader.remove(), 1000);
+  }, 3000);
+});
 ```
 
 ---
