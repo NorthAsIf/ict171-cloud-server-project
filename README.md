@@ -20,7 +20,7 @@ This project also serves to demonstrate best practices in documenting technical 
 
 - **Student Name**: [Your Name]
 - **Student Number**: [Your Student Number]
-- **Live Site**: [http://northosc.pw](http://northosc.pw)
+- **Live Site**: [https://northosc.pw](https://northosc.pw)
 - **Global IP**: `3.27.222.26`
 - **Cloud Platform**: AWS EC2 (Ubuntu 20.04)
 - **Web Stack**: Apache2, HTML5, CSS3, JavaScript
@@ -137,6 +137,16 @@ if (navigator.geolocation) {
 ```
 
 **Explanation**: This script first checks if the browser supports geolocation, then fetches current weather data from Open-Meteo based on the user's coordinates. It extracts temperature and wind speed and displays it within the weather section of the homepage.
+
+---
+
+## 🕒 Timeline Overview
+
+A full development timeline, including feature milestones and technical updates, is maintained in the project repository. 
+
+📄 **[Click here to view the full project timeline](https://github.com/NorthAsIf/ict171-cloud-server-project/blob/main/Timeline.md)**
+
+This document provides a chronological view of the steps taken during development and may assist in understanding the build sequence and learning progression.
 
 ---
 
