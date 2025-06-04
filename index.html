@@ -248,7 +248,6 @@
       }
     };
 
-    // Scroll nav
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll("header nav a");
     window.addEventListener("scroll", () => {
@@ -268,7 +267,6 @@
       });
     });
 
-    // Typing animation
     const phrases = ["Server is running ✅", "JavaScript is running 💻", "Cloud connected 🌐"];
     let idx = 0;
     function typeWriter(txt, el, speed = 60, cb = null) {
@@ -291,32 +289,53 @@
     }
     loopTyping();
 
-    // Weather
+    // Updated Weather Section
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        const geoURL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=dbebf239818b4450884caccac93ced74`;
-        const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-        try {
-          const [geoRes, weatherRes] = await Promise.all([fetch(geoURL), fetch(weatherURL)]);
-          const geo = await geoRes.json();
-          const weather = await weatherRes.json();
-          const city = geo.results[0].components.city || geo.results[0].components.town || "your area";
-          const temp = weather.current_weather.temperature;
-          const wind = weather.current_weather.windspeed;
-          const time = weather.current_weather.time.split("T")[1];
-          document.querySelector("#weather h1").textContent = `Weather in ${city}`;
-          document.querySelector("#weather h2").textContent = `${temp}°C`;
-          document.querySelector("#weather p:nth-of-type(1)").textContent = `Wind: ${wind} km/h`;
-          document.querySelector("#weather p:nth-of-type(2)").textContent = `Time: ${time}`;
-        } catch (e) {
-          console.error("Weather fetch error", e);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const geoURL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=dbebf239818b4450884caccac93ced74`;
+          const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+          try {
+            const [geoRes, weatherRes] = await Promise.all([
+              fetch(geoURL),
+              fetch(weatherURL),
+            ]);
+            const geo = await geoRes.json();
+            const weather = await weatherRes.json();
+
+            let city = "your area";
+            if (geo.results.length > 0) {
+              const comp = geo.results[0].components;
+              city = comp.city || comp.town || comp.village || comp.county || comp.state || "your area";
+            }
+
+            if (!weather.current_weather) throw new Error("No weather data");
+
+            const temp = weather.current_weather.temperature;
+            const wind = weather.current_weather.windspeed;
+            const time = weather.current_weather.time.split("T")[1];
+
+            document.querySelector("#weather h1").textContent = `Weather in ${city}`;
+            document.querySelector("#weather h2").textContent = `${temp}°C`;
+            document.querySelector("#weather p:nth-of-type(1)").textContent = `Wind: ${wind} km/h`;
+            document.querySelector("#weather p:nth-of-type(2)").textContent = `Time: ${time}`;
+          } catch (e) {
+            console.error("Weather fetch error:", e);
+            document.querySelector("#weather h1").textContent = "Weather unavailable";
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error.message);
+          document.querySelector("#weather h1").textContent = "Location access denied";
         }
-      });
+      );
+    } else {
+      document.querySelector("#weather h1").textContent = "Geolocation not supported";
     }
 
-    // Bandwidth chart
     const ctx = document.getElementById('bandwidthChart').getContext('2d');
     const chartData = {
       labels: Array.from({ length: 10 }, (_, i) => `${i}s`),
@@ -363,7 +382,6 @@
       chart.update();
     }, 2000);
 
-    // Timeline + Docs
     fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/Timeline.md')
       .then(res => res.text())
       .then(md => document.getElementById('timeline-container').innerHTML = marked.parse(md));
@@ -371,7 +389,6 @@
       .then(res => res.text())
       .then(md => document.getElementById('docs-container').innerHTML = marked.parse(md));
 
-    // Preloader
     window.addEventListener("load", () => {
       setTimeout(() => {
         const preloader = document.getElementById("preloader");
