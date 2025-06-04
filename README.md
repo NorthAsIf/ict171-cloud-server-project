@@ -106,6 +106,40 @@ fetch("https://api.open-meteo.com/v1/forecast?...")
 
 ---
 
+## 🧾 Commented Code Sample and Description
+
+Below is a functional JavaScript block used in this project to fetch and display live weather conditions:
+
+```javascript
+// Check if geolocation is supported
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+    try {
+      const res = await fetch(weatherURL);
+      const weather = await res.json();
+      const temp = weather.current_weather.temperature;
+      const wind = weather.current_weather.windspeed;
+
+      // Update DOM with weather data
+      document.querySelector("#weather h2").textContent = `${temp}°C`;
+      document.querySelector("#weather p:nth-of-type(1)").textContent = `Wind: ${wind} km/h`;
+    } catch (e) {
+      console.error("Weather fetch error:", e);
+    }
+  });
+} else {
+  document.querySelector("#weather h1").textContent = "Geolocation not supported";
+}
+```
+
+**Explanation**: This script first checks if the browser supports geolocation, then fetches current weather data from Open-Meteo based on the user's coordinates. It extracts temperature and wind speed and displays it within the weather section of the homepage.
+
+---
+
 ## 🎞️ Explainer Video
 
 🎥 **[Watch the project video here](https://your-video-link.com)**  
@@ -126,4 +160,3 @@ This documentation enables a complete reinstallation of the project from scratch
 - [Open-Meteo](https://open-meteo.com/)
 - [OpenCage Geocoder](https://opencagedata.com/)
 - [Weather Icons – Meteocons](https://bas.dev/work/meteocons)
-****
