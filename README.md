@@ -136,19 +136,28 @@ _This project was built and improved over 4+ weeks. The timeline documents all t
 
 ---
 
-## 📚 References
+## 📚 References (APA 7th Edition)
 
-- [AWS EC2](https://aws.amazon.com/ec2/)
-- [GoDaddy DNS Manager](https://www.godaddy.com/)
-- [Open-Meteo API](https://open-meteo.com/)
-- [OpenCage Geocoder](https://opencagedata.com/)
-- [Chart.js](https://www.chartjs.org/)
-- [AOS Scroll Animations](https://michalsnik.github.io/aos/)
-- [Marked.js](https://marked.js.org/)
-- [Certbot SSL](https://certbot.eff.org/)
-- [MDN Web Docs](https://developer.mozilla.org/)
+AOS. (n.d.). Animate on scroll library. https://michalsnik.github.io/aos/
 
----
+Chart.js. (n.d.). Chart.js documentation. https://www.chartjs.org/
+
+Certbot. (n.d.). Certbot: Make the web more secure. https://certbot.eff.org/
+
+GitHub. (n.d.). Amazon EC2 Web Services tutorial. SCH-IT Murdoch Uni Networking Labs. https://github.com/SCH-IT-MurdochUni/NetworkingLabs/blob/main/Server_Environments_and_Architectures/amazon_ec2_web_services.md
+
+Marked.js. (n.d.). Marked: Markdown parser and compiler. https://marked.js.org/
+
+Mozilla Developer Network. (n.d.). MDN Web Docs. https://developer.mozilla.org/
+
+OpenCage Geocoder. (n.d.). Geocoding API for developers. https://opencagedata.com/
+
+Open-Meteo. (n.d.). Weather API documentation. https://open-meteo.com/
+
+Amazon Web Services. (n.d.). Amazon EC2. https://aws.amazon.com/ec2/
+
+GoDaddy. (n.d.). DNS management and domain configuration. https://www.godaddy.com/
+
 
 ## 🤖 ChatGPT Usage
 
