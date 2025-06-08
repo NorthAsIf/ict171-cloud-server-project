@@ -2,18 +2,18 @@
 
 ## 👤 Student Details
 
-- **Name**: Ryan  
+- **Name**: Reinhardt Nieuwoudt 
 - **Student ID**: 35204517  
 - **Live Site**: https://northosc.pw  
-- **Global IP**: 3.27.222.26  
+- **Public IP**: 13.239.136.17  
 - **Domain Registrar**: GoDaddy  
-- **Cloud Provider**: AWS EC2 (Ubuntu 20.04)
+- **Cloud Provider**: AWS EC2 (Ubuntu 24.04)
 
 ---
 
 ## 📌 Project Overview
 
-This project was completed for the ICT171 unit to demonstrate manual deployment of a cloud-based web server. The website is hosted on an AWS EC2 instance using Apache2 and showcases various frontend technologies, scripting, API integrations, and interactive UI features.
+This project was completed as part of the ICT171 course to show my ability to deploy, configure, and document a fully functional cloud server. The goal was to construct a live website utilising Infrastructure as a Service (IaaS) through AWS EC2, create new web features with HTML, CSS, and JavaScript, and document the process so that others may replicate it. The website, northosc.pw, has dynamic frontend features like animations, a live weather area, and a simulated bandwidth chart. This effort combines real-time APIs, JavaScript graphing, and automated documentation retrieval through GitHub.
 
 ---
 
@@ -53,7 +53,7 @@ scp -i webserver-key.pem index.html ubuntu@3.27.222.26:/var/www/html/
 
 ### 5. Link Domain via GoDaddy
 
-- Set A record pointing to `3.27.222.26`
+- Set A record pointing to `13.239.136.17`
 - Wait for DNS to propagate
 
 ### 6. Enable HTTPS with Certbot
