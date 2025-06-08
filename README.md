@@ -1,4 +1,5 @@
-# 🌐 northosc.pw – Cloud Server Project
+# 🌐 [northosc.pw](https://northosc.pw) – Cloud Server Project
+
 
 This project demonstrates the manual deployment of a public-facing web server on AWS EC2 running Ubuntu 20.04 with Apache2. It hosts a custom-built HTML/CSS/JavaScript site showcasing dynamic animations, weather and bandwidth simulations, and responsive UI.
 
