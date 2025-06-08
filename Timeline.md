@@ -4,7 +4,7 @@ This document outlines the chronological steps taken to build and deploy the **n
 
 ---
 
-## 🗓️ 2025-05-01 – Launched Ubuntu EC2 Instance
+## 🗓️ 22/05/2025 – Launched Ubuntu EC2 Instance
 
 - Created an EC2 instance using the AWS Management Console.
 - Selected **Ubuntu 20.04** (Free Tier eligible).
@@ -13,7 +13,7 @@ This document outlines the chronological steps taken to build and deploy the **n
 
 ---
 
-## 🗓️ 2025-05-01 – Connected via SSH and Updated Packages
+## 🗓️ 22/05/2025 – Connected via SSH and Updated Packages
 
 ```bash
 ssh -i "webserver-key.pem" ubuntu@<public-ip>
@@ -22,30 +22,50 @@ sudo apt update
 
 ---
 
-## 🗓️ 2025-05-01 – Installed Apache Web Server
+## 🗓️ 22/05/2025 – Installed Apache Web Server
 
 ```bash
-sudo apt install apache2
+sudo apt install apache2 -y
 ```
 
 - Verified by visiting the public IP in a browser to see Apache default page.
 
 ---
 
-## 🗓️ 2025-05-02 – Created HTML Directory and Custom index.html
+## 🗓️ 22/05/2025 – Replaced Apache Default Page with Custom HTML
 
 ```bash
 cd /var/www/html
+sudo rm index.html
 sudo nano index.html
 ```
 
-- Replaced the default HTML with a custom-designed structure.
+- Pasted custom HTML content into `index.html`.
 
 ---
 
-## 🗓️ 2025-05-03 – Implemented Animated SVG Preloader
+## 🗓️ 23/05/2025 – Linked Domain via GoDaddy
 
-**HTML:**
+- Purchased domain `northosc.pw` via GoDaddy.
+- Added an **A Record** pointing to the EC2 public IP.
+- Waited for DNS propagation to complete (approx. 10 minutes).
+
+---
+
+## 🗓️ 23/05/2025 – Enabled HTTPS with Certbot
+
+```bash
+sudo apt install certbot python3-certbot-apache -y
+sudo certbot --apache
+```
+
+- Provided email, accepted TOS, selected domain.
+- Verified HTTPS was working via browser (padlock icon and https:// prefix).
+
+---
+
+## 🗓️ 24/05/2025 – Implemented Animated SVG Preloader
+
 ```html
 <div id="preloader">
   <svg viewBox="0 0 600 100" class="north-draw">
@@ -54,7 +74,6 @@ sudo nano index.html
 </div>
 ```
 
-**CSS:**
 ```css
 .north-draw text {
   font-size: 80px;
@@ -72,9 +91,8 @@ sudo nano index.html
 
 ---
 
-## 🗓️ 2025-05-03 – Added Typing Text Animation
+## 🗓️ 24/05/2025 – Added Typing Text Animation
 
-**JavaScript:**
 ```js
 const phrases = ["Server is running ✅", "JavaScript is running 💻", "Cloud connected 🌐"];
 let idx = 0;
@@ -103,29 +121,41 @@ loopTyping();
 
 ---
 
-## 🗓️ 2025-05-04 – Integrated Weather APIs (OpenCage & Open-Meteo)
+## 🗓️ 25/05/2025 – Integrated Weather APIs (OpenCage & Open-Meteo)
 
-**JavaScript (snippet):**
 ```js
-const geoURL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=API_KEY`;
-const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
 
-fetch(weatherURL).then(res => res.json()).then(data => {
-  // update DOM
-});
+    try {
+      const res = await fetch(weatherURL);
+      const weather = await res.json();
+      const temp = weather.current_weather.temperature;
+      const wind = weather.current_weather.windspeed;
+
+      document.querySelector("#weather h2").textContent = `${temp}°C`;
+      document.querySelector("#weather p:nth-of-type(1)").textContent = `Wind: ${wind} km/h`;
+    } catch (e) {
+      console.error("Weather fetch error:", e);
+    }
+  });
+} else {
+  document.querySelector("#weather h1").textContent = "Geolocation not supported";
+}
 ```
 
 ---
 
-## 🗓️ 2025-05-04 – Added Bandwidth Usage Simulation Chart
+## 🗓️ 25/05/2025 – Added Bandwidth Usage Simulation with Chart.js
 
-**Chart.js Setup:**
 ```html
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <canvas id="bandwidthChart" width="400" height="200"></canvas>
 ```
 
-**JavaScript:**
 ```js
 const ctx = document.getElementById('bandwidthChart').getContext('2d');
 const chartData = {
@@ -178,9 +208,8 @@ setInterval(() => {
 
 ---
 
-## 🗓️ 2025-05-05 – Enabled Scroll Animations with AOS
+## 🗓️ 26/05/2025 – Enabled Scroll Animations with AOS
 
-**CDN + Init:**
 ```html
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
@@ -189,16 +218,14 @@ setInterval(() => {
 </script>
 ```
 
-**Usage:**
 ```html
 <section data-aos="fade-up"> ... </section>
 ```
 
 ---
 
-## 🗓️ 2025-05-06 – GitHub Markdown Timeline Integration
+## 🗓️ 26/05/2025 – Added GitHub Markdown Timeline Integration
 
-**Script:**
 ```html
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
@@ -212,9 +239,8 @@ setInterval(() => {
 
 ---
 
-## 🗓️ 2025-05-06 – Added Smooth Scroll-Based Section Highlighting
+## 🗓️ 27/05/2025 – Added Smooth Scroll-Based Section Highlighting
 
-**JavaScript:**
 ```js
 const sections = document.querySelectorAll("section");
 const navLinks = document.querySelectorAll("header nav a");
@@ -238,9 +264,8 @@ window.addEventListener("scroll", () => {
 
 ---
 
-## 🗓️ 2025-05-06 – Added Preloader Auto-Fade on Load
+## 🗓️ 27/05/2025 – Added Preloader Auto-Fade on Load
 
-**JavaScript:**
 ```js
 window.addEventListener("load", () => {
   setTimeout(() => {
