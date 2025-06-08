@@ -17,7 +17,7 @@ This project was completed as part of the ICT171 course to show my ability to de
 
 ---
 
-## ⚙️ Setup & Deployment Instructions [Detailed I structions](https://github.com/NorthAsIf/ict171-cloud-server-project/blob/main/documentation.md)
+## ⚙️ Setup & Deployment Instructions [Detailed Instructions](https://github.com/NorthAsIf/ict171-cloud-server-project/blob/main/documentation.md)
 
 ### 1. Launch EC2 Instance
 
