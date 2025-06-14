@@ -29,6 +29,8 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease;
     }
     .north-draw {
       width: 80%;
@@ -109,6 +111,7 @@
       font-weight: 600;
       color: #000;
     }
+    .home-content h3 { min-height: 2.5rem; }
 
     .weather-card {
       background: white;
@@ -154,7 +157,63 @@
       text-decoration: none;
     }
 
-    .home-content h3 { min-height: 2.5rem; }
+    /* Forecast Styles */
+    #javascript {
+      position: relative;
+      background: rgb(231,231,231);
+      color: #000;
+    }
+    #javascript .forecast-container {
+      max-width: 1200px;
+      margin: 0 auto 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      color: #000;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 1;
+    }
+    #javascript h2 {
+      color: #000;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    #javascript .current {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    #javascript .current .temp {
+      font-size: 5rem;
+      margin-bottom: .5rem;
+    }
+    #javascript .current .desc {
+      font-size: 1.5rem;
+      opacity: .8;
+    }
+    #javascript .forecast-row {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    #javascript .card {
+      min-width: 100px;
+      background: #fff;
+      color: #000;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1rem;
+      text-align: center;
+    }
+    #javascript .metric, #javascript .uv, #javascript .wind {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -191,13 +250,40 @@
 
   <section id="javascript" data-aos="fade-up">
     <h2>JavaScript Showcase</h2>
-    <div class="weather-card" id="weather">
-      <div class="weather-icon">🌤️</div>
-      <h1>Fetching your location...</h1>
-      <h2>--°C</h2>
-      <p>Wind: -- km/h</p>
-      <p>Time: --</p>
+
+    <div class="forecast-container">
+      <div class="current">
+        <h1 id="forecast-location">—</h1>
+        <div class="temp" id="current-temp">--°C</div>
+        <div class="desc" id="current-desc">Loading weather...</div>
+      </div>
+      <h2>Hourly Forecast</h2>
+      <div class="forecast-row" id="hourly"></div>
+      <h2>10-Day Forecast</h2>
+      <div class="forecast-row" id="daily"></div>
+      <div class="metric">
+        <h4>Feels Like</h4>
+        <div class="value" id="feels">--°C</div>
+      </div>
+      <div class="metric">
+        <h4>Precipitation (24h)</h4>
+        <div class="value" id="precip">-- mm</div>
+      </div>
+      <div class="metric">
+        <h4>Humidity</h4>
+        <div class="value" id="hum">--%</div>
+      </div>
+      <div class="uv">
+        <h4>UV Index</h4>
+        <div class="value" id="uvi-val">--</div>
+      </div>
+      <div class="wind">
+        <h4>Wind</h4>
+        <p><span id="wind-speed">--</span> km/h</p>
+        <div class="compass" id="compass"></div>
+      </div>
     </div>
+
     <div class="weather-card">
       <h2>Simulated Bandwidth Usage</h2>
       <canvas id="bandwidthChart" width="400" height="200"></canvas>
@@ -221,169 +307,163 @@
     <p>Created by Ryan – Student ID: 35204517.</p>
   </section>
 
-  <!-- JavaScript -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    const toggleExpand = (id) => {
+    const toggleExpand = id => {
       const el = document.getElementById(id);
-      if (el.style.maxHeight === "none") {
-        el.style.maxHeight = "400px";
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        el.style.maxHeight = "none";
-      }
+      el.style.maxHeight = el.style.maxHeight === 'none' ? '400px' : 'none';
+      if (el.style.maxHeight === '400px') el.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll("header nav a");
-    window.addEventListener("scroll", () => {
-      let scrollY = window.scrollY;
-      sections.forEach(section => {
-        const offset = section.offsetTop - 150;
-        const height = section.offsetHeight;
-        const id = section.getAttribute("id");
-        if (scrollY >= offset && scrollY < offset + height) {
-          navLinks.forEach(link => {
-            link.classList.remove("active");
-            if (link.getAttribute("href") === `#${id}`) {
-              link.classList.add("active");
-            }
-          });
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('header nav a');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      sections.forEach(sec => {
+        const offset = sec.offsetTop - 150, h = sec.offsetHeight;
+        if (y >= offset && y < offset + h) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          document.querySelector(`header nav a[href="#${sec.id}"]`).classList.add('active');
         }
       });
     });
 
-    const phrases = ["Server is running ✅", "JavaScript is running 💻", "Cloud connected 🌐"];
+    const phrases = ['Server is running ✅','JavaScript is running 💻','Cloud connected 🌐'];
     let idx = 0;
-    function typeWriter(txt, el, speed = 60, cb = null) {
-      let i = 0;
-      const target = document.getElementById(el);
-      target.textContent = "";
-      function type() {
-        if (i < txt.length) {
-          target.textContent += txt.charAt(i++);
-          setTimeout(type, speed);
-        } else if (cb) setTimeout(cb, 1500);
-      }
-      type();
+    function typeWriter(txt, el, speed=60, cb=null) {
+      let i=0; const tgt=document.getElementById(el); tgt.textContent='';
+      (function type(){
+        if (i<txt.length) tgt.textContent+=txt.charAt(i++);
+        else if (cb) setTimeout(cb,1500);
+        if (i<txt.length) setTimeout(type,speed);
+      })();
     }
-    function loopTyping() {
-      typeWriter(phrases[idx], "status", 60, () => {
-        idx = (idx + 1) % phrases.length;
-        loopTyping();
-      });
-    }
-    loopTyping();
-
-    // Updated Weather Section
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          const geoURL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=dbebf239818b4450884caccac93ced74`;
-          const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-
-          try {
-            const [geoRes, weatherRes] = await Promise.all([
-              fetch(geoURL),
-              fetch(weatherURL),
-            ]);
-            const geo = await geoRes.json();
-            const weather = await weatherRes.json();
-
-            let city = "your area";
-            if (geo.results.length > 0) {
-              const comp = geo.results[0].components;
-              city = comp.city || comp.town || comp.village || comp.county || comp.state || "your area";
-            }
-
-            if (!weather.current_weather) throw new Error("No weather data");
-
-            const temp = weather.current_weather.temperature;
-            const wind = weather.current_weather.windspeed;
-            const time = weather.current_weather.time.split("T")[1];
-
-            document.querySelector("#weather h1").textContent = `Weather in ${city}`;
-            document.querySelector("#weather h2").textContent = `${temp}°C`;
-            document.querySelector("#weather p:nth-of-type(1)").textContent = `Wind: ${wind} km/h`;
-            document.querySelector("#weather p:nth-of-type(2)").textContent = `Time: ${time}`;
-          } catch (e) {
-            console.error("Weather fetch error:", e);
-            document.querySelector("#weather h1").textContent = "Weather unavailable";
-          }
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-          document.querySelector("#weather h1").textContent = "Location access denied";
-        }
-      );
-    } else {
-      document.querySelector("#weather h1").textContent = "Geolocation not supported";
-    }
+    (function loop(){ typeWriter(phrases[idx],'status',60,()=>(idx=(idx+1)%phrases.length,loop())); })();
 
     const ctx = document.getElementById('bandwidthChart').getContext('2d');
     const chartData = {
       labels: Array.from({ length: 10 }, (_, i) => `${i}s`),
       datasets: [
-        {
-          label: 'Download (Mbps)',
-          data: Array(10).fill(0),
-          borderColor: 'blue',
-          backgroundColor: 'rgba(0, 123, 255, 0.2)',
-          tension: 0.4,
-          fill: true
-        },
-        {
-          label: 'Upload (Mbps)',
-          data: Array(10).fill(0),
-          borderColor: 'green',
-          backgroundColor: 'rgba(40, 167, 69, 0.2)',
-          tension: 0.4,
-          fill: true
-        }
+        { label: 'Download (Mbps)', data: Array(10).fill(0), tension: 0.4, fill: true },
+        { label: 'Upload (Mbps)', data: Array(10).fill(0), tension: 0.4, fill: true }
       ]
     };
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: chartData,
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true },
-          x: { title: { display: true, text: 'Time (s)' } }
-        }
-      }
-    });
+    const chart = new Chart(ctx, { type: 'line', data: chartData, options: { responsive: true, scales: { y: { beginAtZero: true } } } });
     let elapsed = 10;
     setInterval(() => {
-      const dl = (Math.random() * 50 + 10).toFixed(2);
-      const ul = (Math.random() * 20 + 5).toFixed(2);
       chartData.labels.push(`${elapsed++}s`);
       chartData.labels.shift();
-      chartData.datasets[0].data.push(dl);
+      chartData.datasets[0].data.push((Math.random()*50+10).toFixed(2));
       chartData.datasets[0].data.shift();
-      chartData.datasets[1].data.push(ul);
+      chartData.datasets[1].data.push((Math.random()*20+5).toFixed(2));
       chartData.datasets[1].data.shift();
       chart.update();
     }, 2000);
 
-    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/Timeline.md')
-      .then(res => res.text())
-      .then(md => document.getElementById('timeline-container').innerHTML = marked.parse(md));
-    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/documentation.md')
-      .then(res => res.text())
-      .then(md => document.getElementById('docs-container').innerHTML = marked.parse(md));
+    function weatherIcon(code) {
+      if (code === 0) return '☀️';
+      if (code <= 3) return '⛅';
+      if (code <= 48) return '🌧️';
+      if (code <= 65) return '🌦️';
+      return '❓';
+    }
 
-    window.addEventListener("load", () => {
+    async function fetchWeatherByCoords(lat, lon) {
+      const geo = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=dbebf239818b4450884caccac93ced74`)
+        .then(r => r.json());
+      const c = geo.results[0]?.components || {};
+      let loc = c.city || c.town || c.village || c.county || '';
+      if (c.state) loc += loc ? `, ${c.state}` : c.state;
+      if (c.country) loc += loc ? `, ${c.country}` : c.country;
+      if (!loc) loc = 'Unknown location';
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
+        + `&hourly=temperature_2m,precipitation,relativehumidity_2m,weathercode`
+        + `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,uv_index_max`
+        + `&current_weather=true&timezone=auto`;
+      const data = await fetch(url).then(r => r.json());
+      return { city: loc, data };
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async pos => {
+        const w = await fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
+        renderForecast(w);
+      }, () => {
+        document.getElementById('current-desc').textContent = 'Location denied';
+      });
+    } else {
+      document.getElementById('current-desc').textContent = 'Geo unsupported';
+    }
+
+    function renderForecast(w) {
+      document.getElementById('forecast-location').textContent = w.city;
+      document.getElementById('current-temp').textContent = `${w.data.current_weather.temperature}°C`;
+      document.getElementById('current-desc').textContent = weatherIcon(w.data.current_weather.weathercode);
+
+      const hr = document.getElementById('hourly');
+      hr.innerHTML = '';
+      for (let i = 0; i < 6; i++) {
+        const time = w.data.hourly.time[i].split('T')[1].slice(0,5);
+        const tmp = w.data.hourly.temperature_2m[i];
+        const code = w.data.hourly.weathercode[i];
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="time">${i===0?'Now':time}</div>
+          <div class="icon">${weatherIcon(code)}</div>
+          <div class="temp">${tmp}°</div>`;
+        hr.appendChild(card);
+      }
+
+      const dy = document.getElementById('daily');
+      dy.innerHTML = '';
+      for (let i = 0; i < 7; i++) {
+        const dt = new Date(w.data.daily.time[i]);
+        const day = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
+        const code = w.data.daily.weathercode[i];
+        const tmax = w.data.daily.temperature_2m_max[i];
+        const tmin = w.data.daily.temperature_2m_min[i];
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="day">${day}</div>
+          <div class="icon">${weatherIcon(code)}</div>
+          <div class="temp">${tmax}°/${tmin}°</div>`;
+        dy.appendChild(card);
+      }
+
+      document.getElementById('feels').textContent = `${w.data.current_weather.temperature}°C`;
+      document.getElementById('precip').textContent = `${w.data.daily.precipitation_sum[0]} mm`;
+      document.getElementById('hum').textContent = `${w.data.hourly.relativehumidity_2m[0]}%`;
+      document.getElementById('uvi-val').textContent = w.data.daily.uv_index_max[0];
+      document.getElementById('wind-speed').textContent = w.data.current_weather.windspeed;
+    }
+
+    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/documentation.md')
+      .then(r => r.text())
+      .then(md => document.getElementById('docs-container').innerHTML = marked.parse(md))
+      .catch(() => document.getElementById('docs-container').textContent = 'Documentation unavailable');
+
+    fetch('https://raw.githubusercontent.com/NorthAsIf/ict171-cloud-server-project/main/Timeline.md')
+      .then(r => r.text())
+      .then(md => document.getElementById('timeline-container').innerHTML = marked.parse(md))
+      .catch(() => document.getElementById('timeline-container').textContent = 'Timeline unavailable');
+
+    // Preloader removal (after 3 seconds)
+    window.addEventListener('load', () => {
+      const pre = document.getElementById('preloader');
+      if (!pre) return;
       setTimeout(() => {
-        const preloader = document.getElementById("preloader");
-        preloader.style.transition = "opacity 1s ease";
-        preloader.style.opacity = "0";
-        setTimeout(() => preloader.remove(), 1000);
+        pre.style.opacity = '0';
+        pre.addEventListener('transitionend', () => pre.remove());
       }, 3000);
+    });
+    window.addEventListener('error', () => {
+      const pre = document.getElementById('preloader');
+      if (pre) pre.remove();
     });
   </script>
 </body>
