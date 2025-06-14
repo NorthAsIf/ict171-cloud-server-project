@@ -132,7 +132,7 @@ _This project was built and improved over 4+ weeks. The timeline documents all t
 
 ## 🎥 Explainer Video
 
-🎬 [Watch the Explainer Video](https://your-video-link-here)
+🎬 [Watch the Explainer Video](https://youtu.be/-Ce7sX6qw8Y)
 
 ---
 
