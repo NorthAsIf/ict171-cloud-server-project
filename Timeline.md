@@ -278,3 +278,15 @@ window.addEventListener("load", () => {
 ```
 
 ---
+
+## 📄 Acknowledgments
+
+This project used various free APIs and open-source tools including:
+
+- [Open-Meteo](https://open-meteo.com/) for weather data
+- [OpenCage](https://opencagedata.com/) for geolocation
+- [Chart.js](https://www.chartjs.org/) for charts
+- [AOS](https://michalsnik.github.io/aos/) for animations
+- [Marked.js](https://marked.js.org/) for rendering Markdown
+
+Portions of this project were assisted using **ChatGPT** for JavaScript development, debugging, and integration support.
